@@ -10,27 +10,42 @@ class UI(QMainWindow):
     def __init__(self):
         super(UI, self).__init__()
 
-        # Load the ui file
+        # initial bitmap to save our image
         self.pixmap = None
+        self.filename = None
+
+        # Load the ui file
         uic.loadUi("Image.ui", self)
 
         # Define our widgets
-        self.button = self.findChild(QPushButton, "pushButton")
-        self.label = self.findChild(QLabel, "label")
+        self.upload_button = self.findChild(QPushButton, "upload_button")
+        self.results_button = self.findChild(QPushButton, "results_button")
+        self.screen_one = self.findChild(QLabel, "screen01")
+        self.screen_two = self.findChild(QLabel, "screen02")
+        self.bousselam = self.findChild(QLabel, "bousselam_output")
+        self.gta = self.findChild(QLabel, "gta_output")
+        self.oued_el_bared = self.findChild(QLabel, "oued_el_bared_output")
+        self.vitron = self.findChild(QLabel, "vitron_output")
+        self.avoine = self.findChild(QLabel, "avoine_output")
+        self.ble_tendre = self.findChild(QLabel, "ble_tendre_output")
+        self.orge = self.findChild(QLabel, "orge_output")
+        self.triticale = self.findChild(QLabel, "triticale_output")
+        self.total = self.findChild(QLabel, "total_output")
 
         # Click The Dropdown Box
-        self.button.clicked.connect(self.clicker)
+        self.upload_button.clicked.connect(self.upload)
+        self.results_button.clicked.connect(self.results)
 
         # Show The App
         self.show()
 
-    def clicker(self):
-        filename = QFileDialog.getOpenFileName(self, "Open File", "D:\\DataSet\\Final\\Full images\\Avoine",
-                                               "All Files (*);;PNG Files (*.png);;Jpg Files (*.jpg)")
+    def upload(self):
+        self.filename = QFileDialog.getOpenFileName(self, "Open File", "D:\\DataSet\\Final\\Full images\\Avoine",
+                                                    "All Files (*);;PNG Files (*.png);;Jpg Files (*.jpg)")
 
         # Open The Image
-        if filename:
-            self.pixmap = QPixmap(filename[0])
+        if self.filename:
+            self.pixmap = QPixmap(self.filename[0])
             # Convert the QPixmap to a QImage
             qimage = self.pixmap.toImage()
 
@@ -59,7 +74,28 @@ class UI(QMainWindow):
             self.pixmap = QPixmap.fromImage(resized_qimage)
 
             # Add Pic to label
-            self.label.setPixmap(self.pixmap)
+            self.screen_one.setPixmap(self.pixmap)
+
+    def results(self):
+        if self.pixmap:
+
+            self.pixmap = QPixmap(self.filename[0])
+            # Convert the QPixmap to a QImage
+
+            qimage = self.pixmap.toImage()
+
+            # Convert the QImage to a numpy array
+            width = qimage.width()
+            height = qimage.height()
+            buffer = qimage.bits().asstring(qimage.byteCount())
+            image_array = np.frombuffer(buffer, dtype=np.uint8).reshape((height, width, 4))
+
+            # Convert the image array to OpenCV format
+            image = cv2.cvtColor(image_array, cv2.COLOR_RGBA2BGR)
+
+            # Define the maximum dimensions for the resized image
+            new_width = 600
+            new_height = 800
 
             # 2. Image Segmentation
 
@@ -102,7 +138,21 @@ class UI(QMainWindow):
             # Convert the QImage to QPixmap
             self.pixmap = QPixmap.fromImage(resized_qimage)
 
-            self.label_2.setPixmap(self.pixmap)
+            self.screen_two.setPixmap(self.pixmap)
+
+            # print the final results
+            self.bousselam.setText("0")
+            self.gta.setText("0")
+            self.oued_el_bared.setText("0")
+            self.vitron.setText("0")
+            self.avoine.setText("0")
+            self.ble_tendre.setText("0")
+            self.orge.setText("0")
+            self.triticale.setText("0")
+            self.total.setText("0")
+
+        else:
+            print("No image available")
 
 
 # Initialize The App

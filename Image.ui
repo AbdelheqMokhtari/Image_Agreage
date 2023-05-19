@@ -44,7 +44,7 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="screen01">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -88,7 +88,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="upload_button">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -116,7 +116,7 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="screen02">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -160,7 +160,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="results_button">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -203,7 +203,7 @@
         <item>
          <layout class="QGridLayout" name="gridLayout_2">
           <item row="1" column="0">
-           <widget class="QLabel" name="label_3">
+           <widget class="QLabel" name="bousselam_display">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -232,7 +232,7 @@
            </widget>
           </item>
           <item row="3" column="0">
-           <widget class="QLabel" name="label_7">
+           <widget class="QLabel" name="oued_el_bared_display">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -261,7 +261,7 @@
            </widget>
           </item>
           <item row="3" column="1">
-           <widget class="QLabel" name="label_14">
+           <widget class="QLabel" name="oued_el_bared_output">
             <property name="font">
              <font>
               <pointsize>12</pointsize>
@@ -278,10 +278,13 @@
             <property name="text">
              <string/>
             </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
            </widget>
           </item>
           <item row="6" column="0">
-           <widget class="QLabel" name="label_10">
+           <widget class="QLabel" name="ble_tendre_display">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -310,7 +313,7 @@
            </widget>
           </item>
           <item row="7" column="1">
-           <widget class="QLabel" name="label_18">
+           <widget class="QLabel" name="orge_output">
             <property name="font">
              <font>
               <pointsize>12</pointsize>
@@ -327,10 +330,13 @@
             <property name="text">
              <string/>
             </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
            </widget>
           </item>
           <item row="8" column="0">
-           <widget class="QLabel" name="label_12">
+           <widget class="QLabel" name="triticale_display">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -359,7 +365,7 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QLabel" name="label_6">
+           <widget class="QLabel" name="gta_output">
             <property name="font">
              <font>
               <pointsize>12</pointsize>
@@ -376,10 +382,13 @@
             <property name="text">
              <string/>
             </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
            </widget>
           </item>
           <item row="4" column="0">
-           <widget class="QLabel" name="label_8">
+           <widget class="QLabel" name="vitron_display">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -408,7 +417,7 @@
            </widget>
           </item>
           <item row="2" column="0">
-           <widget class="QLabel" name="label_5">
+           <widget class="QLabel" name="gta_display">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -437,7 +446,7 @@
            </widget>
           </item>
           <item row="5" column="0">
-           <widget class="QLabel" name="label_9">
+           <widget class="QLabel" name="avoine_display">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -466,7 +475,7 @@
            </widget>
           </item>
           <item row="7" column="0">
-           <widget class="QLabel" name="label_11">
+           <widget class="QLabel" name="orge_display">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -495,7 +504,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QLabel" name="label_4">
+           <widget class="QLabel" name="bousselam_output">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -527,10 +536,13 @@
             <property name="text">
              <string/>
             </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
            </widget>
           </item>
           <item row="9" column="0">
-           <widget class="QLabel" name="label_13">
+           <widget class="QLabel" name="total_display">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -559,7 +571,7 @@
            </widget>
           </item>
           <item row="4" column="1">
-           <widget class="QLabel" name="label_15">
+           <widget class="QLabel" name="vitron_output">
             <property name="font">
              <font>
               <pointsize>12</pointsize>
@@ -575,11 +587,14 @@
             </property>
             <property name="text">
              <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
           <item row="6" column="1">
-           <widget class="QLabel" name="label_17">
+           <widget class="QLabel" name="ble_tendre_output">
             <property name="font">
              <font>
               <pointsize>12</pointsize>
@@ -595,11 +610,14 @@
             </property>
             <property name="text">
              <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
           <item row="5" column="1">
-           <widget class="QLabel" name="label_16">
+           <widget class="QLabel" name="avoine_output">
             <property name="font">
              <font>
               <pointsize>12</pointsize>
@@ -615,11 +633,14 @@
             </property>
             <property name="text">
              <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
           <item row="8" column="1">
-           <widget class="QLabel" name="label_19">
+           <widget class="QLabel" name="triticale_output">
             <property name="font">
              <font>
               <pointsize>12</pointsize>
@@ -635,11 +656,14 @@
             </property>
             <property name="text">
              <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
           <item row="9" column="1">
-           <widget class="QLabel" name="label_20">
+           <widget class="QLabel" name="total_output">
             <property name="font">
              <font>
               <pointsize>12</pointsize>
@@ -655,6 +679,9 @@
             </property>
             <property name="text">
              <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
@@ -791,7 +818,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_3">
+         <widget class="QPushButton" name="save_button">
           <property name="minimumSize">
            <size>
             <width>0</width>
