@@ -4,6 +4,9 @@ from PyQt5.QtGui import QPixmap, QImage
 import sys
 import cv2
 import numpy as np
+from tensorflow import keras
+import tensorflow as tf
+from keras.preprocessing import image
 
 
 class UI(QMainWindow):
@@ -38,6 +41,12 @@ class UI(QMainWindow):
 
         # Show The App
         self.show()
+
+    # def preprocess_image(image):
+    #    resized_image = cv2.resize(image, (224, 224))
+    #    normalized_image = resized_image / 255.0  # Normalize pixel values
+    #    preprocessed_image = np.expand_dims(normalized_image, axis=0)
+    #    return preprocessed_image
 
     def upload(self):
         self.filename = QFileDialog.getOpenFileName(self, "Open File", "D:\\DataSet\\Final\\Full images\\Avoine",
@@ -124,10 +133,40 @@ class UI(QMainWindow):
             # Find contours in the binary image
             contours, hierarchy = cv2.findContours(thresh_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
+            total_number = 0
             # Filter out small contours and draw the remaining contours on the original image
             for contour in contours:
-                if cv2.contourArea(contour) > 100:  # Minimum area threshold
+                if cv2.contourArea(contour) > 1000:  # Minimum area threshold
                     cv2.drawContours(image, [contour], 0, (0, 255, 0), 5)
+                    total_number += 1
+
+            crop_image = []
+            for contour in contours:
+                if cv2.contourArea(contour) > 1000:  # Minimum area threshold
+                    # Get the bounding box coordinates
+                    x, y, w, h = cv2.boundingRect(contour)
+                    print("Area =", cv2.contourArea(contour), "x =", x, "y =", y, "w =", w, "h =", h)
+
+                    # crop image
+                    crop_image.append(image[y:(y + h), x:(x + w)])
+
+            # Load your saved model
+            # model = keras.models.load_model('Model/ResNet50New20.h5')
+            # print("hello")
+            # Preprocess each image in the list
+            # preprocessed_images = []
+            # for image_tf in crop_image:
+            #    preprocessed_images.append(self.preprocess_image(image_tf))
+                # image_tf = self.preprocess_image(image_tf)
+                # preprocessed_images.append(image_tf)
+
+            # preprocessed_images = np.array(preprocessed_images)
+
+            # print(preprocessed_images)
+
+            # predictions = model.predict(preprocessed_images)
+
+            # print(predictions)
 
             # Resize the image
             resized_image = cv2.resize(image, (new_width, new_height))
@@ -149,7 +188,7 @@ class UI(QMainWindow):
             self.ble_tendre.setText("0")
             self.orge.setText("0")
             self.triticale.setText("0")
-            self.total.setText("0")
+            self.total.setText(str(total_number))
 
         else:
             print("No image available")
