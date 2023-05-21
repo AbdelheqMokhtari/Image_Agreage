@@ -137,7 +137,7 @@ class UI(QMainWindow):
             # Filter out small contours and draw the remaining contours on the original image
             for contour in contours:
                 if cv2.contourArea(contour) > 1000:  # Minimum area threshold
-                    cv2.drawContours(image, [contour], 0, (0, 255, 0), 5)
+                    cv2.drawContours(image, [contour], 0, (0, 255, 0), 10)
                     total_number += 1
 
             crop_image = []
