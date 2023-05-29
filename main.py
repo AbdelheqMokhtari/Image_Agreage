@@ -1,10 +1,11 @@
 from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel, QFileDialog
 from PyQt5 import uic
 from PyQt5.QtGui import QPixmap, QImage
+from tensorflow import keras
+from keras.utils import img_to_array
 import sys
 import cv2
 import numpy as np
-from tensorflow import keras
 import tensorflow as tf
 from keras.preprocessing import image
 
@@ -41,12 +42,6 @@ class UI(QMainWindow):
 
         # Show The App
         self.show()
-
-    # def preprocess_image(image):
-    #    resized_image = cv2.resize(image, (224, 224))
-    #    normalized_image = resized_image / 255.0  # Normalize pixel values
-    #    preprocessed_image = np.expand_dims(normalized_image, axis=0)
-    #    return preprocessed_image
 
     def upload(self):
         self.filename = QFileDialog.getOpenFileName(self, "Open File", "D:\\DataSet\\Final\\Full images\\Avoine",
@@ -147,26 +142,58 @@ class UI(QMainWindow):
                     x, y, w, h = cv2.boundingRect(contour)
                     print("Area =", cv2.contourArea(contour), "x =", x, "y =", y, "w =", w, "h =", h)
 
+                    crop_img = image[y:(y + h), x:(x + w)]
+                    # Get the original height and width of the image
+                    height, width = crop_img.shape[:2]
+
+                    # Set the desired output size
+                    output_size = 350
+
+                    # Calculate the amount of padding needed on each side
+                    h_pad = max(0, (output_size - height) // 2)
+                    w_pad = max(0, (output_size - width) // 2)
+
+                    # Add the padding using copyMakeBorder() function
+                    output_img = cv2.copyMakeBorder(crop_img, h_pad, h_pad, w_pad, w_pad, cv2.BORDER_CONSTANT,
+                                                    value=(0, 0,
+                                                           0))
+
                     # crop image
-                    crop_image.append(image[y:(y + h), x:(x + w)])
+                    crop_image.append(output_img)
 
             # Load your saved model
-            # model = keras.models.load_model('Model/ResNet50New20.h5')
+            model = keras.models.load_model('Model/ResNet50New20.h5')
             # print("hello")
             # Preprocess each image in the list
-            # preprocessed_images = []
-            # for image_tf in crop_image:
-            #    preprocessed_images.append(self.preprocess_image(image_tf))
-                # image_tf = self.preprocess_image(image_tf)
-                # preprocessed_images.append(image_tf)
+            preprocessed_images = []
+            i = 0
+            for image_tf in crop_image:
+                print(i)
+                # Convert BGR to RGB and resize the image
+                # image_tf = cv2.cvtColor(image_tf, cv2.COLOR_BGR2RGB)
+                image_tf = cv2.resize(image_tf, (224, 224))
 
-            # preprocessed_images = np.array(preprocessed_images)
+                # Convert the OpenCV image to a NumPy array
+                image_tf = np.asarray(image_tf)
+
+                image_tf = img_to_array(image_tf)
+                normalized_img = image_tf / 255.0
+                image_tf = np.expand_dims(normalized_img, axis=0)
+
+                preprocessed_images.append(image_tf)
+                i += 1
+
+            preprocessed_images = np.array(preprocessed_images)
+
+            preprocessed_images = preprocessed_images.reshape(-1, 224, 224, 3)
 
             # print(preprocessed_images)
 
-            # predictions = model.predict(preprocessed_images)
+            predictions = model.predict(preprocessed_images)
 
-            # print(predictions)
+            predictions = np.argmax(predictions, axis=1)
+
+            print(predictions)
 
             # Resize the image
             resized_image = cv2.resize(image, (new_width, new_height))
