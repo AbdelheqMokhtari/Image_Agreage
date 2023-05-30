@@ -132,7 +132,6 @@ class UI(QMainWindow):
 
             total_number = 0
 
-
             crop_image = []
             for contour in contours:
                 if cv2.contourArea(contour) > 1000:  # Minimum area threshold
