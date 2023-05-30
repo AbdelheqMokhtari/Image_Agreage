@@ -83,19 +83,21 @@ class UI(QMainWindow):
     def results(self):
         if self.pixmap:
 
-            self.pixmap = QPixmap(self.filename[0])
+            # self.pixmap = QPixmap(self.filename[0])
             # Convert the QPixmap to a QImage
 
-            qimage = self.pixmap.toImage()
+            # qimage = self.pixmap.toImage()
 
             # Convert the QImage to a numpy array
-            width = qimage.width()
-            height = qimage.height()
-            buffer = qimage.bits().asstring(qimage.byteCount())
-            image_array = np.frombuffer(buffer, dtype=np.uint8).reshape((height, width, 4))
+            # width = qimage.width()
+            # height = qimage.height()
+            # buffer = qimage.bits().asstring(qimage.byteCount())
+            # image_array = np.frombuffer(buffer, dtype=np.uint8).reshape((height, width, 4))
 
             # Convert the image array to OpenCV format
-            image = cv2.cvtColor(image_array, cv2.COLOR_RGBA2BGR)
+            # image = cv2.cvtColor(image_array, cv2.COLOR_RGBA2BGR)
+
+            image = cv2.imread(self.filename[0])
 
             # Define the maximum dimensions for the resized image
             new_width = 600
@@ -129,11 +131,7 @@ class UI(QMainWindow):
             contours, hierarchy = cv2.findContours(thresh_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
             total_number = 0
-            # Filter out small contours and draw the remaining contours on the original image
-            for contour in contours:
-                if cv2.contourArea(contour) > 1000:  # Minimum area threshold
-                    cv2.drawContours(image, [contour], 0, (0, 255, 0), 10)
-                    total_number += 1
+
 
             crop_image = []
             for contour in contours:
@@ -166,11 +164,11 @@ class UI(QMainWindow):
             # print("hello")
             # Preprocess each image in the list
             preprocessed_images = []
-            i = 0
+            # i = 0
             for image_tf in crop_image:
-                print(i)
+                # print(i)
                 # Convert BGR to RGB and resize the image
-                # image_tf = cv2.cvtColor(image_tf, cv2.COLOR_BGR2RGB)
+                image_tf = cv2.cvtColor(image_tf, cv2.COLOR_BGR2RGB)
                 image_tf = cv2.resize(image_tf, (224, 224))
 
                 # Convert the OpenCV image to a NumPy array
@@ -181,7 +179,7 @@ class UI(QMainWindow):
                 image_tf = np.expand_dims(normalized_img, axis=0)
 
                 preprocessed_images.append(image_tf)
-                i += 1
+                # i += 1
 
             preprocessed_images = np.array(preprocessed_images)
 
@@ -194,6 +192,12 @@ class UI(QMainWindow):
             predictions = np.argmax(predictions, axis=1)
 
             print(predictions)
+
+            # Filter out small contours and draw the remaining contours on the original image
+            for contour in contours:
+                if cv2.contourArea(contour) > 1000:  # Minimum area threshold
+                    cv2.drawContours(image, [contour], 0, (0, 255, 0), 10)
+                    total_number += 1
 
             # Resize the image
             resized_image = cv2.resize(image, (new_width, new_height))
