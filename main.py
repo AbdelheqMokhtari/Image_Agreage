@@ -83,19 +83,19 @@ class UI(QMainWindow):
     def results(self):
         if self.pixmap:
 
-            # self.pixmap = QPixmap(self.filename[0])
+            self.pixmap = QPixmap(self.filename[0])
             # Convert the QPixmap to a QImage
 
-            # qimage = self.pixmap.toImage()
+            qimage = self.pixmap.toImage()
 
             # Convert the QImage to a numpy array
-            # width = qimage.width()
-            # height = qimage.height()
-            # buffer = qimage.bits().asstring(qimage.byteCount())
-            # image_array = np.frombuffer(buffer, dtype=np.uint8).reshape((height, width, 4))
+            width = qimage.width()
+            height = qimage.height()
+            buffer = qimage.bits().asstring(qimage.byteCount())
+            image_array = np.frombuffer(buffer, dtype=np.uint8).reshape((height, width, 4))
 
             # Convert the image array to OpenCV format
-            # image = cv2.cvtColor(image_array, cv2.COLOR_RGBA2BGR)
+            image_screen = cv2.cvtColor(image_array, cv2.COLOR_RGBA2BGR)
 
             image = cv2.imread(self.filename[0])
 
@@ -133,8 +133,10 @@ class UI(QMainWindow):
             total_number = 0
 
             crop_image = []
+            contours_final = []
             for contour in contours:
                 if cv2.contourArea(contour) > 1000:  # Minimum area threshold
+                    contours_final.append(contour)
                     # Get the bounding box coordinates
                     x, y, w, h = cv2.boundingRect(contour)
                     print("Area =", cv2.contourArea(contour), "x =", x, "y =", y, "w =", w, "h =", h)
@@ -193,13 +195,39 @@ class UI(QMainWindow):
             print(predictions)
 
             # Filter out small contours and draw the remaining contours on the original image
-            for contour in contours:
-                if cv2.contourArea(contour) > 1000:  # Minimum area threshold
-                    cv2.drawContours(image, [contour], 0, (0, 255, 0), 10)
+            # for contour in contours:
+            #    if cv2.contourArea(contour) > 1000:  # Minimum area threshold
+            #        cv2.drawContours(image_screen, [contour], 0, (0, 255, 0), 5)
+            #        total_number += 1
+
+            for prediction, contour in zip(predictions, contours_final):
+                if prediction == 0:
+                    cv2.drawContours(image_screen, [contour], 0, (255, 0, 0), 10)
+                    total_number += 1
+                elif prediction == 1:
+                    cv2.drawContours(image_screen, [contour], 0, (0, 255, 0), 10)
+                    total_number += 1
+                elif prediction == 2:
+                    cv2.drawContours(image_screen, [contour], 0, (0, 0, 255), 10)
+                    total_number += 1
+                elif prediction == 3:
+                    cv2.drawContours(image_screen, [contour], 0, (255, 255, 0), 10)
+                    total_number += 1
+                elif prediction == 4:
+                    cv2.drawContours(image_screen, [contour], 0, (255, 165, 0), 10)
+                    total_number += 1
+                elif prediction == 5:
+                    cv2.drawContours(image_screen, [contour], 0, (128, 0, 128), 10)
+                    total_number += 1
+                elif prediction == 6:
+                    cv2.drawContours(image_screen, [contour], 0, (0, 255, 255), 10)
+                    total_number += 1
+                elif prediction == 7:
+                    cv2.drawContours(image_screen, [contour], 0, (255, 192, 203), 10)
                     total_number += 1
 
             # Resize the image
-            resized_image = cv2.resize(image, (new_width, new_height))
+            resized_image = cv2.resize(image_screen, (new_width, new_height))
 
             # Convert the resized OpenCV image back to QImage
             resized_qimage = QImage(resized_image.data, new_width, new_height, QImage.Format_RGB888)
@@ -208,17 +236,42 @@ class UI(QMainWindow):
             self.pixmap = QPixmap.fromImage(resized_qimage)
 
             self.screen_two.setPixmap(self.pixmap)
+            # counts = np.bincount(predictions)
+
+            # print(np.count_nonzero(predictions == 4))
 
             # print the final results
-            self.bousselam.setText("0")
-            self.gta.setText("0")
-            self.oued_el_bared.setText("0")
-            self.vitron.setText("0")
-            self.avoine.setText("0")
-            self.ble_tendre.setText("0")
-            self.orge.setText("0")
-            self.triticale.setText("0")
+            self.bousselam.setText(str(np.count_nonzero(predictions == 2)))
+            self.gta.setText(str(np.count_nonzero(predictions == 3)))
+            self.oued_el_bared.setText(str(np.count_nonzero(predictions == 5)))
+            self.vitron.setText(str(np.count_nonzero(predictions == 7)))
+            self.avoine.setText(str(np.count_nonzero(predictions == 0)))
+            self.ble_tendre.setText(str(np.count_nonzero(predictions == 1)))
+            self.orge.setText(str(np.count_nonzero(predictions == 4)))
+            self.triticale.setText(str(np.count_nonzero(predictions == 6)))
             self.total.setText(str(total_number))
+
+            # print results Not working the elements greater than the big number in list doesn't counted
+            # self.bousselam.setText(str(counts[2]))
+            # self.gta.setText(str(counts[3]))
+            # self.oued_el_bared.setText(str(counts[5]))
+            # self.vitron.setText(str(counts[7]))
+            # self.avoine.setText(str(counts[0]))
+            # self.ble_tendre.setText(str(counts[1]))
+            # self.orge.setText(str(counts[4]))
+            # self.triticale.setText(str(counts[6]))
+            # self.total.setText(str(total_number))
+
+            # print the final results
+            # self.bousselam.setText("0")
+            # self.gta.setText("0")
+            # self.oued_el_bared.setText("0")
+            # self.vitron.setText("0")
+            # self.avoine.setText("0")
+            # self.ble_tendre.setText("0")
+            # self.orge.setText("0")
+            # self.triticale.setText("0")
+            # self.total.setText(str(total_number))
 
         else:
             print("No image available")
